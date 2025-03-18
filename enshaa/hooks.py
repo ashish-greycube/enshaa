@@ -77,7 +77,7 @@ app_license = "MIT"
 
 # before_app_install = "enshaa.utils.before_app_install"
 # after_app_install = "enshaa.utils.after_app_install"
-
+after_migrate = "enshaa.migrate.after_migrate"
 # Integration Cleanup
 # -------------------
 # To clean up dependencies/integrations with other apps
