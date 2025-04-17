@@ -80,7 +80,7 @@ def get_data(filters):
 				`tabSales Order`
 			Where {0}
 		""".format(conditions),filters,as_dict=1,debug=1)
-	print(so_data)
+	# print(so_data)
 
 	if len(so_data)>0:
 		for row in so_data:
@@ -105,6 +105,18 @@ def get_data(filters):
 			if len(connected_purchase_invoice)>0:
 				total_cost = total_cost + connected_purchase_invoice[0].total
 
+			connected_stock_entry = frappe.db.get_all("Stock Entry",
+											filters={"docstatus":1,"stock_entry_type":"Material Issue"},
+											fields=["name"])
+			if len(connected_stock_entry)>0:
+				for stock_entry in connected_stock_entry:
+					print(stock_entry.name)
+					stock_entry_items = frappe.db.get_all("Stock Entry Detail",
+													filters={"parent":stock_entry.name,"custom_sales_order":row.so_reference},
+													fields=["sum(amount) as total_amount"],group_by="custom_sales_order")
+					if len(stock_entry_items)>0:
+						total_cost = total_cost + stock_entry_items[0].total_amount
+			
 			row["total_cost"] = total_cost
 			row["profit_amount"] = row.total_amount - total_cost
 			row["profit"] = (row.profit_amount / row.total_amount) * 100

@@ -28,6 +28,28 @@ def after_migrate():
                 is_custom_field=1,
             ),
         ],
+
+        "Stock Entry Detail": [
+            dict(
+                fieldname="custom_references",
+                label="References",
+                fieldtype="Section Break",
+                insert_after="sample_quantity",
+                translatable=0,
+                is_system_generated=0,
+                is_custom_field=1,
+            ),
+            dict(
+                fieldname="custom_sales_order",
+                label="Sales Order",
+                fieldtype="Link",
+                options="Sales Order",
+                insert_after="custom_references",
+                translatable=0,
+                is_system_generated=0,
+                is_custom_field=1,
+            ),
+        ],
         
     }
     print("Creating custom fields for app Enshaa")
